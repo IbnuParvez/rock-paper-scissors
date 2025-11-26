@@ -11,33 +11,46 @@ function getComputerChoice() {
 }
 
 function getHumanChoice() {
-  let choice = prompt("What is your choice?");
-  return choice;
+  let choice = prompt("What is your choice? (rock, paper, or scissors)");
+  return choice ? choice.toLowerCase() : "";
 }
 
 function playGame(){
-  
-let humanScore = 0;
-let computerScore = 0;
+  let humanScore = 0;
+  let computerScore = 0;
 
-function playRound(humanChoice, computerChoice) {
-  const human = humanChoice.toLowerCase();
-  const computer = computerChoice.toLowerCase();
+  function playRound(humanChoice, computerChoice) {
+    // Normalize choices to lowercase for case-insensitive comparison
+    const human = humanChoice.toLowerCase();
+    const computer = computerChoice.toLowerCase();
 
-  if (humanChoice === computerChoice) {
-    console.log("Aa!.. You guys drew it out");
-  } else if (human === "Rock" && computer === "Scissors") || (human === "Scissors" && computer === "Paper") || (human === "Paper" && computer === "Rock") {
-    console.log("You win boss!!!");
-  } else {
-    console.log("you lost");
+    // Check for draw using normalized strings to avoid case sensitivity issues
+    if (human === computer) {
+      console.log("Aa!.. You guys drew it out");
+    } else if (
+      // Win conditions: human wins when their choice beats computer's
+      (human === "rock" && computer === "scissors") ||
+      (human === "paper" && computer === "rock") ||
+      (human === "scissors" && computer === "paper")
+    ) {
+      console.log("You win boss!!!");
+      humanScore++; // Increment human score on win
+    } else {
+      console.log("you lost");
+      computerScore++; // Increment computer score on loss
+    }
   }
-}
 
-const humanSelection = getHumanChoice();
-const computerSelection = getComputerChoice();
+  // Play 5 rounds for a complete game
+  for (let round = 1; round <= 5; round++) {
+    console.log(`Round ${round}:`);
+    const humanSelection = getHumanChoice();
+    const computerSelection = getComputerChoice();
+    playRound(humanSelection, computerSelection);
+  }
 
-playRound(humanSelection, computerSelection);
-
+  // Display final scores after all rounds
+  console.log(`Final Scores - Human: ${humanScore}, Computer: ${computerScore}`);
 }
 
 playGame();
